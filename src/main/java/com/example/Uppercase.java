@@ -16,9 +16,6 @@ package com.example;/*
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.function.Function;
 
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
@@ -27,108 +24,14 @@ import com.google.cloud.functions.HttpResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.function.adapter.gcloud.GcloudSpringBootHttpRequestHandler;
-import org.springframework.context.annotation.Bean;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.GenericMessage;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Dmitry Solomakha
  */
-@SpringBootApplication
-public class Uppercase extends GcloudSpringBootHttpRequestHandler implements HttpFunction {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Uppercase.class, args);
-	}
-	// @Bean
-	// public Function<String, String> uppercase() {
-	// return String::toUpperCase;
+public class Uppercase{
+	// public void service(HttpRequest request, HttpResponse response) throws Exception {
+	// 	handleRequest(request, response);
 	// }
-	@Override
-	public void service(HttpRequest request, HttpResponse response) throws Exception {
-	  System.out.println("ClassLoader is: " + Uppercase.class.getClassLoader().getClass().getName());
-	  if (Uppercase.class.getClassLoader() instanceof URLClassLoader) {
-	  	URLClassLoader loader = (URLClassLoader) Uppercase.class.getClassLoader();
-	  	for (URL url : loader.getURLs()) {
-	  	  System.out.println(url.toString());
-
-			}
-
-		}
-		handleRequest(request, response);
-	}
-
-	@Bean
-	public Function<Message<Foo>, Message<Bar>> function() {
-		return (foo -> new GenericMessage<>(
-				new Bar(foo.getPayload().getValue().toUpperCase()), new HashMap<>()));
-	}
-
-
-	class Foo {
-
-		private String value;
-
-		Foo() {
-		}
-
-		Foo(String value) {
-			this.value = value;
-		}
-
-		public String lowercase() {
-			return this.value.toLowerCase();
-		}
-
-		public String uppercase() {
-			return this.value.toUpperCase();
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-
-		public void setValue(String value) {
-			this.value = value;
-		}
-
-	}
-
-	class Bar {
-
-		private String value;
-
-		Bar() {
-		}
-
-		Bar(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-
-		public void setValue(String value) {
-			this.value = value;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) {
-				return true;
-			}
-			if (o == null || getClass() != o.getClass()) {
-				return false;
-			}
-			Bar bar = (Bar) o;
-			return Objects.equals(getValue(), bar.getValue());
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(getValue());
-		}
-	}
-
 }
