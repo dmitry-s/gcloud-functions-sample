@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Build-Jdk: 1.8.0_181-google-v7
-Main-Class: com.example.Uppercase
